@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FlowSpace | Personal Productivity Workspace</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="src/css/style.css">
+</head>
+<body>
+<div class="bg-grid"></div>
+
+<div class="shell">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-mark">
+        <svg class="icon" viewBox="0 0 24 24"><rect x="2.5" y="4" width="19" height="16" rx="2"/><path d="M6.5 9l3.5 3-3.5 3"/><path d="M12.5 15h5"/></svg>
+      </div>
+      <div class="brand-text">
+        <span class="brand-name">FlowSpace</span>
+        <span class="brand-sub">v2.0 · workspace</span>
+      </div>
+    </div>
+
+    <nav class="side-nav" id="sideNav">
+      <button class="side-link active" data-view="dashboard">
+        <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>
+        Dashboard <span class="kbd">1</span>
+      </button>
+      <button class="side-link" data-view="tasks">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M3 6l1.5 1.5L7 5"/><path d="M3 12l1.5 1.5L7 10"/><path d="M3 18l1.5 1.5L7 16"/><path d="M11 6h10"/><path d="M11 12h10"/><path d="M11 18h10"/></svg>
+        Tasks <span class="kbd">2</span>
+      </button>
+      <button class="side-link" data-view="goals">
+        <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.4" fill="currentColor" stroke="none"/></svg>
+        Goals <span class="kbd">3</span>
+      </button>
+      <button class="side-link" data-view="analytics">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M4 20V10"/><path d="M12 20V4"/><path d="M20 20v-7"/><path d="M2 20h20"/></svg>
+        Analytics <span class="kbd">4</span>
+      </button>
+    </nav>
+
+    <div class="side-foot">
+      <div class="status-pill"><span class="status-dot"></span><span id="sideStatus">all systems nominal</span></div>
+      <button class="theme-toggle" id="themeToggle">
+        <svg class="icon" id="themeIcon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></svg>
+        <span id="themeLabel">Light mode</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <div class="main-wrap">
+    <header class="topbar">
+      <div class="breadcrumb"><b>flowspace</b> / <span id="crumbView">dashboard</span></div>
+      <div class="topbar-spacer"></div>
+      <div class="cmdk">
+        <svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+        Quick find…
+        <span class="kbd">⌘K</span>
+      </div>
+      <button class="btn btn-primary" id="openTaskModal">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+        New task
+      </button>
+    </header>
+
+    <main class="content">
+
+      <!-- DASHBOARD -->
+      <section class="view active" id="view-dashboard">
+
+        <div class="win hero">
+          <div class="win-bar"><div class="win-dots"><span></span><span></span><span></span></div><span class="win-title">status.sh — flowspace</span></div>
+          <div class="win-body">
+            <div class="hero-line"><span class="prompt">➜</span>&nbsp;<span class="path">~/workspace</span>&nbsp;<span class="hero-type">flowspace status --today</span></div>
+            <h1 class="hero-greeting" id="heroGreeting">Good to see you.</h1>
+            <p class="hero-date" id="todayDate"></p>
+
+            <div class="stat-strip">
+              <div class="stat-cell stat-total">
+                <div class="stat-top"><span class="stat-label">total</span><span class="stat-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M3 6l1.5 1.5L7 5"/><path d="M11 6h10"/><path d="M3 12l1.5 1.5L7 10"/><path d="M11 12h10"/></svg></span></div>
+                <span class="stat-value" id="statTotal">0</span>
+              </div>
+              <div class="stat-cell stat-completed">
+                <div class="stat-top"><span class="stat-label">completed</span><span class="stat-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M5 12l4 4 10-10"/></svg></span></div>
+                <span class="stat-value" id="statCompleted">0</span>
+              </div>
+              <div class="stat-cell stat-pending">
+                <div class="stat-top"><span class="stat-label">pending</span><span class="stat-icon"><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7v5l3 2"/></svg></span></div>
+                <span class="stat-value" id="statPending">0</span>
+              </div>
+              <div class="stat-cell stat-overdue">
+                <div class="stat-top"><span class="stat-label">overdue</span><span class="stat-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M12 3l10 18H2L12 3z"/><path d="M12 9v5M12 17h.01"/></svg></span></div>
+                <span class="stat-value" id="statOverdue">0</span>
+              </div>
+            </div>
+
+            <div class="heat-wrap">
+              <div class="heat-head">
+                <span class="heat-title">// completions — last 12 weeks</span>
+                <div class="heat-legend">less <span class="sq" style="background:var(--border)"></span><span class="sq" style="background:var(--accent-soft)"></span><span class="sq" style="background:var(--accent)"></span><span class="sq" style="background:var(--accent-bright)"></span> more</div>
+              </div>
+              <div class="heat-grid" id="heatGrid"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="win">
+            <div class="win-bar"><div class="win-dots"><span></span><span></span><span></span></div><span class="win-title">queue.log</span></div>
+            <div class="win-body">
+              <div class="panel-title">
+                <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M3 10h18"/></svg>
+                Upcoming deadlines
+                <span class="count" id="upcomingCount">0</span>
+              </div>
+              <div id="upcomingList" class="list-rows"></div>
+            </div>
+          </div>
+
+          <div class="win">
+            <div class="win-bar"><div class="win-dots"><span></span><span></span><span></span></div><span class="win-title">goals.yaml</span></div>
+            <div class="win-body">
+              <div class="panel-title">
+                <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.4" fill="currentColor" stroke="none"/></svg>
+                Goals progress
+                <span class="count" id="goalsCount">0</span>
+              </div>
+              <div id="goalsPreview" class="list-rows"></div>
+            </div>
+          </div>
+
+          <div class="win" style="grid-column:1/-1;">
+            <div class="win-bar"><div class="win-dots"><span></span><span></span><span></span></div><span class="win-title">summary.diff</span></div>
+            <div class="win-body">
+              <div class="panel-title">
+                <svg class="icon" viewBox="0 0 24 24"><path d="M4 20V10"/><path d="M12 20V4"/><path d="M20 20v-7"/><path d="M2 20h20"/></svg>
+                Priority breakdown
+              </div>
+              <div class="diffstat">
+                <div class="diffstat-bar" id="diffstatBar"></div>
+                <div class="diffstat-keys" id="diffstatKeys"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TASKS -->
+      <section class="view" id="view-tasks">
+        <div class="view-head">
+          <div>
+            <span class="eyebrow">workload</span>
+            <h1>Tasks</h1>
+            <p class="view-sub">Everything on your plate, filterable and sortable.</p>
+          </div>
+        </div>
+
+        <div class="toolbar">
+          <label class="field field-search">
+            <svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+            <input type="text" id="searchInput" placeholder="Search tasks or projects…">
+          </label>
+          <label class="field">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M4 5h16M7 12h10M10 19h4"/></svg>
+            <select id="filterStatus">
+              <option value="all">All status</option>
+              <option value="pending">Pending</option>
+              <option value="completed">Completed</option>
+            </select>
+          </label>
+          <label class="field">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M5 3v18"/><path d="M5 4h11l-2 4 2 4H5"/></svg>
+            <select id="filterPriority">
+              <option value="all">All priority</option>
+              <option value="high">High</option>
+              <option value="medium">Medium</option>
+              <option value="low">Low</option>
+            </select>
+          </label>
+          <label class="field">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M8 5v14M8 5l-3 3M8 5l3 3"/><path d="M16 19V5M16 19l3-3M16 19l-3-3"/></svg>
+            <select id="sortBy">
+              <option value="deadline">Sort: deadline</option>
+              <option value="priority">Sort: priority</option>
+              <option value="created">Sort: created</option>
+              <option value="az">Sort: A–Z</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="task-list" id="taskList"></div>
+        <p class="empty-note" id="taskEmptyState" style="display:none;">no tasks match this filter — try clearing search or add a new one</p>
+      </section>
+
+      <!-- GOALS -->
+      <section class="view" id="view-goals">
+        <div class="view-head">
+          <div>
+            <span class="eyebrow">objectives</span>
+            <h1>Goals</h1>
+            <p class="view-sub">Longer-running targets, tracked incrementally.</p>
+          </div>
+          <button class="btn btn-primary" id="openGoalModal">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+            New goal
+          </button>
+        </div>
+        <div class="goals-grid" id="goalsList"></div>
+        <p class="empty-note" id="goalEmptyState" style="display:none;">no goals defined yet — add one to start tracking progress</p>
+      </section>
+
+      <!-- ANALYTICS -->
+      <section class="view" id="view-analytics">
+        <div class="view-head">
+          <div>
+            <span class="eyebrow">insights</span>
+            <h1>Analytics</h1>
+            <p class="view-sub">How your workload breaks down.</p>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="win">
+            <div class="win-bar"><div class="win-dots"><span></span><span></span><span></span></div><span class="win-title">completion.rate</span></div>
+            <div class="win-body">
+              <div class="panel-title">Completion rate</div>
+              <div class="ring-wrap">
+                <svg class="ring" viewBox="0 0 126 126"><circle cx="63" cy="63" r="55" class="ring-bg"></circle><circle cx="63" cy="63" r="55" class="ring-fg" id="analyticsRing"></circle></svg>
+                <div class="ring-text"><span id="analyticsPct">0%</span><small>done</small></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="win">
+            <div class="win-bar"><div class="win-dots"><span></span><span></span><span></span></div><span class="win-title">by_priority.json</span></div>
+            <div class="win-body">
+              <div class="panel-title">Tasks by priority</div>
+              <div class="bar-chart" id="priorityBars"></div>
+            </div>
+          </div>
+
+          <div class="win" style="grid-column:1/-1;">
+            <div class="win-bar"><div class="win-dots"><span></span><span></span><span></span></div><span class="win-title">by_project.json</span></div>
+            <div class="win-body">
+              <div class="panel-title">Tasks by project</div>
+              <div class="bar-chart" id="projectBars"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+</div>
+
+<!-- Mobile bottom nav -->
+<nav class="mobile-nav" id="mobileNav">
+  <button class="active" data-view="dashboard"><svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>dash</button>
+  <button data-view="tasks"><svg class="icon" viewBox="0 0 24 24"><path d="M3 6l1.5 1.5L7 5"/><path d="M11 6h10"/><path d="M3 12l1.5 1.5L7 10"/><path d="M11 12h10"/></svg>tasks</button>
+  <button data-view="goals"><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="5"/></svg>goals</button>
+  <button data-view="analytics"><svg class="icon" viewBox="0 0 24 24"><path d="M4 20V10"/><path d="M12 20V4"/><path d="M20 20v-7"/><path d="M2 20h20"/></svg>stats</button>
+</nav>
+
+<!-- Task Modal -->
+<div class="modal-overlay" id="taskModalOverlay">
+  <div class="modal win">
+    <div class="win-bar"><div class="win-dots"><span></span><span></span><span></span></div><span class="win-title" id="taskModalTitle">new_task.form</span></div>
+    <div class="win-body">
+      <form id="taskForm">
+        <label>title</label>
+        <input type="text" id="taskTitle" required placeholder="e.g. Finish wireframes">
+        <label>project</label>
+        <input type="text" id="taskProject" placeholder="e.g. Website Redesign">
+        <label>deadline</label>
+        <input type="date" id="taskDeadline">
+        <label>priority</label>
+        <select id="taskPriority">
+          <option value="high">High</option>
+          <option value="medium" selected>Medium</option>
+          <option value="low">Low</option>
+        </select>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-ghost" id="cancelTaskModal">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save task</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Goal Modal -->
+<div class="modal-overlay" id="goalModalOverlay">
+  <div class="modal win">
+    <div class="win-bar"><div class="win-dots"><span></span><span></span><span></span></div><span class="win-title">new_goal.form</span></div>
+    <div class="win-body">
+      <form id="goalForm">
+        <label>goal title</label>
+        <input type="text" id="goalTitle" required placeholder="e.g. Learn React">
+        <label>target value</label>
+        <input type="number" id="goalTarget" min="1" value="10" required>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-ghost" id="cancelGoalModal">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save goal</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script src="src/js/script.js"></script>
+</body>
+</html>
